@@ -1,0 +1,38 @@
+[
+    {
+        "title": "Producto de prueba",
+        "price": 20.5,
+        "thumbnail": "urlImgProduct",
+        "id": 1
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 20.5,
+        "thumbnail": "urlImgProduct",
+        "id": 2
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 45.5,
+        "thumbnail": "urlImgProduct",
+        "id": 3
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 32.25,
+        "thumbnail": "urlImgProduct",
+        "id": 4
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 9.46,
+        "thumbnail": "urlImgProduct",
+        "id": 5
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 67.32,
+        "thumbnail": "urlImgProduct",
+        "id": 6
+    }
+]
