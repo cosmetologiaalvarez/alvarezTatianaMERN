@@ -8,6 +8,8 @@ const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 })
 
+server.on('error', (error) => console.log('Error en el servidor'));
+
 let productos = new Contenedor('productos');
 
 app.get('/', (req, res) => {
