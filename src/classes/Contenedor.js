@@ -1,7 +1,8 @@
-const fs = require('fs');
-const { exit } = require('process');
+import fs from 'fs';
 
-class Contenedor {
+const PATH = './files/';
+
+export default class Contenedor {
     constructor (fileName) {
         this.file = fileName;
     }
@@ -13,8 +14,7 @@ class Contenedor {
         let newOjb = !existingFile ? [obj] : [... JSON.parse(existingFile), obj];
         try {
             await fs.promises.writeFile(`${this.file}.json`, JSON.stringify(newOjb));
-            console.log(newObjId)
-            return newObjId;
+            return newOjb;
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
         }
@@ -41,7 +41,8 @@ class Contenedor {
                 return ++lastId;
             }
             return lastId;
-        } catch (error) {console.log('er:', error)
+        } catch (error) {
+            console.log('er:', error)
             return lastId;
         }
     }
@@ -49,18 +50,10 @@ class Contenedor {
     async getById(id) {
         try {
             const readObjs = await this.getFile();
-            const savedObjs = readObjs == false ? false : JSON.parse(readObjs);
-            if (savedObjs) {
-                for (const property in savedObjs) {
-                    if (savedObjs[property]['id'] === id) {
-                        console.log(savedObjs[property]);
-                        return savedObjs[property];
-                    }
-                }
-            }
-            console.log('NULL : No se encontro un objeto con el id ingresado');
-            return null;
-        } catch (error) {console.log('er:', error)
+            const savedObjs = readObjs && JSON.parse(readObjs);
+            if (!savedObjs) return {error: 'No hay objetos en la coleccion'};
+            return savedObjs.find(item => item.id == id) || {error: 'producto no encontrado'};
+        } catch (error) {
 		    throw new Error(`Error en lectura: ${error.message}`);
         }
     }
@@ -75,7 +68,8 @@ class Contenedor {
             }
             console.log('El archivo se encuentra vacio');
             return [];
-        } catch (error) {console.log('er:', error)
+        } catch (error) {
+            console.log('er:', error)
             throw new Error(`Error en lectura: ${error}`);
         }
     }
@@ -95,9 +89,8 @@ class Contenedor {
                     }
                 }
                 let res = !deleteObj 
-                    ? console.log('No se encontro un objeto con el id ingresado')
+                    ? 'No se encontro un objeto con el id ingresado'
                     : await this.reMakeObj(updateFile);
-                console.log(res);
                 return res;
             } else {
                 console.log('No hay objetos en el archivo');
@@ -120,11 +113,29 @@ class Contenedor {
     async reMakeObj(obj) {
         try {
             await fs.promises.writeFile(`${this.file}.json`, JSON.stringify(obj));
-            return 'Objeto Eliminado';
+            return 'Coleccion modificada';
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
         }
     }
-}
 
-module.exports = Contenedor;
+    async updateObject(id, body) {
+        try {
+            let findObject = await this.getById(id);
+            if (findObject.error) return findObject.error;
+            let newData = {...findObject,...body};
+            newData.id = id;
+            let objCollection = await this.getAll();
+            let updateFile = [];
+            for (const property in objCollection) {
+                if (objCollection[property]['id'] != id) {
+                    updateFile.push(objCollection[property]);
+                }
+            }
+            this.reMakeObj([...updateFile, newData]);
+            return newData;
+        } catch(err) {
+            throw new Error(`Error en el proceso: ${err}`);
+        }
+    }
+}
