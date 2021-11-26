@@ -1,0 +1,11 @@
+<input type="button" onclick="location.href='/'" value="Agregar un producto">
+
+<div class="productContainer">
+    {{#each products}}
+        <div>
+            <p>{{this.title}}</p>
+            <p>{{this.price}}</p>
+            <p>{{this.thumbnail}}</p>
+        </div>
+    {{/each}}
+</div>
