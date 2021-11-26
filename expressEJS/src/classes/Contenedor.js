@@ -20,7 +20,7 @@ export default class Contenedor {
 
     async getFile() {
         try {
-            let file = await fs.promises.readFile(`${this.file}.json`, 'utf-8');
+            let file = await fs.promises.readFile(`./files/${this.file}.json`, 'utf-8');
             return file
         } catch(error) {
             return false;

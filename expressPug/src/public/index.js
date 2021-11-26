@@ -7,7 +7,6 @@ document.addEventListener('submit', event => {
         "thumbnail": document.getElementById("thumbnail").value
     };
 
-
     fetch('http://localhost:8080/api/productos', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -18,6 +17,8 @@ document.addEventListener('submit', event => {
         return result.json();
     }).then( json => {
         console.log(json)
+    }).then( result => {
+        location.href = "/";
     })
 })
 
