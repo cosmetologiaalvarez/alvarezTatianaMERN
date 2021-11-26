@@ -1,7 +1,6 @@
 import express from 'express';
 import productRouter from './routes/products.js';
 import cors from 'cors';
-import {engine} from 'express-handlebars';
 import Contenedor from './classes/Contenedor.js';
 
 const app = express();
@@ -22,9 +21,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.use('/api/productos', productRouter);
 
-app.engine('handlebars', engine());
-
-app.set("view engine", "handlebars");
+app.set("view engine", "pug");
 
 app.set("views", "./views");
 
@@ -41,6 +38,6 @@ app.get('/views/productos', (req, res) => {
             products : info
         }
         console.log('hay algo?',productData)
-        res.render("productos", productData);
+        res.render("productos.pug", productData);
     });
 })
