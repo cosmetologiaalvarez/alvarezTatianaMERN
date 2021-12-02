@@ -10,13 +10,13 @@
     <input type="button" onclick="location.href='/'" value="Agregar un producto">
 
     <div class="productContainer">
-        <% products.forEach(function(product) { %>
+        <% products ? products.forEach(function(product) { %>
             <div>
                 <p><%= product.title %></p>
                 <p><%= product.price %></p>
                 <p><%= product.thumbnail %></p>
             </div>
-        <% }); %>
+        <% }) : ''; %>
     </div>
 </body>
 </html>

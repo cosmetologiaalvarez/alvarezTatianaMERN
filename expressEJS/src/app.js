@@ -33,9 +33,8 @@ app.get('/', (req, res) => {
 
 app.get('/views/productos', (req, res) => {
     productos.getAll().then((data) => {
-        let info = data.payload;
         let productData = {
-            products : info
+            products : data
         }
         console.log('hay algo?',productData)
         res.render("pages/productos", productData);
