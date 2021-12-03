@@ -1,5 +1,6 @@
 import express from 'express';
 import Contenedor from '../classes/Contenedor.js';
+import {io} from '../app.js';
 
 const router = express.Router();
 const productos = new Contenedor('productos');
@@ -14,6 +15,7 @@ router.get('/:id', (req, res) => {
     let idProduct = parseInt(req.params.id)
     productos.getById(idProduct).then(result => {
         res.send(result);
+
     })
 })
 
@@ -21,6 +23,11 @@ router.post('/', (req, res) => {
     let newProduct = req.body;
     productos.save(newProduct).then(result => {
         res.send(result);
+        if (result.status == 'sucess') {
+            productos.getAll().then(result => {
+                io.emit('updateProducts', result);
+            })
+        }
     }).catch(e => console.log(e))
 })
 

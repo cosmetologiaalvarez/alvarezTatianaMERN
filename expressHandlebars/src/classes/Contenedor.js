@@ -1,4 +1,5 @@
 import fs from 'fs';
+import __direname from '../utils.js';
 
 export default class Contenedor {
     constructor (fileName) {
@@ -11,7 +12,7 @@ export default class Contenedor {
         let existingFile = await this.getFile();
         let newOjb = !existingFile ? [obj] : [... JSON.parse(existingFile), obj];
         try {
-            await fs.promises.writeFile(`./files/${this.file}.json`, JSON.stringify(newOjb));
+            await fs.promises.writeFile(`${__direname}/files/${this.file}.json`, JSON.stringify(newOjb));
             return newOjb;
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
@@ -20,7 +21,7 @@ export default class Contenedor {
 
     async getFile() {
         try {
-            let file = await fs.promises.readFile(`./files/${this.file}.json`, 'utf-8');
+            let file = await fs.promises.readFile(`${__direname}/files/${this.file}.json`, 'utf-8');
             return file
         } catch(error) {
             return false;
@@ -101,7 +102,7 @@ export default class Contenedor {
 
     async deteleAll() {
         try {
-            fs.promises.writeFile(`./files/${this.file}.json`, '');
+            fs.promises.writeFile(`${__direname}/files/${this.file}.json`, '');
             console.log(`Se ha eliminado los objetos del archivo ${this.file}.json`);
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
@@ -110,7 +111,7 @@ export default class Contenedor {
 
     async reMakeObj(obj) {
         try {
-            await fs.promises.writeFile(`./files/${this.file}.json`, JSON.stringify(obj));
+            await fs.promises.writeFile(`${__direname}/files/${this.file}.json`, JSON.stringify(obj));
             return 'Coleccion modificada';
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
