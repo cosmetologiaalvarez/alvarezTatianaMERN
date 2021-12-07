@@ -42,8 +42,15 @@ app.get('/views/productos', (req, res) => {
 })
 
 io.on('connection', async socket=>{
-    console.log('Socket conectado');
+    let messagesLog = new Contenedor('messages');
     let products = await productos.getAll();
-    console.log('ha pasado?', products)
     socket.emit('updateProducts', products);
+
+    socket.on('message', async data => {
+        let log = await messagesLog.save(data);
+        let loadMessages = await messagesLog.getAll();
+        io.emit('messageLog', loadMessages);
+    });
+
+    socket.emit('messageLog', await messagesLog.getAll());
 })

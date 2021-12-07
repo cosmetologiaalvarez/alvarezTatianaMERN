@@ -1,1 +1,44 @@
-[{"title":"Producto de prueba","price":60.25,"thumbnail":"urlImgProduct","id":1},{"title":"Producto de prueba","price":60.25,"thumbnail":"urlImgProduct","id":2},{"title":"Probando","price":"12","thumbnail":"imagen.png","id":3}]
+[
+    {
+        "title": "Producto de prueba",
+        "price": 60.25,
+        "thumbnail": "urlImgProduct",
+        "id": 1
+    },
+    {
+        "title": "Producto de prueba",
+        "price": 60.25,
+        "thumbnail": "urlImgProduct",
+        "id": 2
+    },
+    {
+        "title": "Probando",
+        "price": "12",
+        "thumbnail": "imagen.png",
+        "id": 3
+    },
+    {
+        "title": "Prueba 4",
+        "price": "900",
+        "thumbnail": "img",
+        "id": 6
+    },
+    {
+        "title": "prueba",
+        "price": "23",
+        "thumbnail": "img",
+        "id": 7
+    },
+    {
+        "title": "prueba9",
+        "price": "299",
+        "thumbnail": "img",
+        "id": 8
+    },
+    {
+        "title": "productos3",
+        "price": "90",
+        "thumbnail": "D",
+        "id": 9
+    }
+]

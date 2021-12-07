@@ -62,7 +62,6 @@ export default class Contenedor {
             const readObjs = await this.getFile();
             const savedObjs = readObjs != '' ? JSON.parse(readObjs) : false;
             if (savedObjs) {
-                console.log(savedObjs);
                 return savedObjs;
             }
             console.log('El archivo se encuentra vacio');
