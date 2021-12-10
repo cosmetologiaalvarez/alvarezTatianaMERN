@@ -136,4 +136,40 @@ export default class Contenedor {
             throw new Error(`Error en el proceso: ${err}`);
         }
     }
+
+    async deleteItemFromCollection(idCollection, idItem) {
+        try {
+            const readObjs =  await this.getFile();
+            const savedObjs = readObjs == false ? false : JSON.parse(readObjs);
+            let deleteObj = false;
+            let idFromCollection = false;
+            if (savedObjs) {
+                let updateFile = [];
+                savedObjs.forEach(currentElement => {
+                    if (currentElement['id'] == idCollection) {
+                        idFromCollection = currentElement;
+                    }
+                });
+                if (idFromCollection) {
+                    idFromCollection['productos'].forEach(currentItem => {
+                        if (currentItem['id'] != idItem) {
+                            updateFile.push(currentItem);
+                        } else {
+                            deleteObj = true;
+                        }
+                    })
+                }
+                idFromCollection['productos'] = updateFile;
+                let res = idFromCollection && deleteObj
+                    ?  await this.updateObject(idCollection, idFromCollection)
+                    : 'No se encontro registro para los datos ingresados';
+                return res;
+            } else {
+                console.log('No hay objetos en el archivo');
+            }
+        } catch (error) {
+            console.log('er:', error)
+		    throw new Error(`Error en lectura: ${error.message}`);
+        }
+    }
 }

@@ -3,12 +3,6 @@
         "title": "Producto de prueba",
         "price": 60.25,
         "thumbnail": "urlImgProduct",
-        "id": 1
-    },
-    {
-        "title": "Producto de prueba",
-        "price": 60.25,
-        "thumbnail": "urlImgProduct",
         "id": 2
     },
     {
@@ -40,5 +34,29 @@
         "price": "90",
         "thumbnail": "D",
         "id": 9
+    },
+    {
+        "title": "Prueba",
+        "price": "900",
+        "thumbnail": "imag",
+        "id": 10
+    },
+    {
+        "title": "Prueba ",
+        "price": "900",
+        "thumbnail": "233ogf",
+        "id": 11
+    },
+    {
+        "title": "Producto",
+        "price": "900",
+        "thumbnail": "img",
+        "id": 13
+    },
+    {
+        "title": "Producto de prueba alterado",
+        "price": 60.25,
+        "thumbnail": "urlImgProduct",
+        "id": 1
     }
 ]

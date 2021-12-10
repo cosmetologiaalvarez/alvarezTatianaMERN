@@ -1,5 +1,6 @@
 import express from 'express';
 import Contenedor from '../classes/Contenedor.js';
+import { authVerification } from '../utils.js';
 import {io} from '../app.js';
 
 const router = express.Router();
@@ -19,7 +20,7 @@ router.get('/:id', (req, res) => {
     })
 })
 
-router.post('/', (req, res) => {
+router.post('/', authVerification, (req, res) => {
     let newProduct = req.body;
     productos.save(newProduct).then(result => {
         res.send(result);
@@ -31,14 +32,14 @@ router.post('/', (req, res) => {
     }).catch(e => console.log(e))
 })
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authVerification, (req, res) => {
     let idProduct = parseInt(req.params.id)
     productos.deteleById(idProduct).then(result => {
         res.send(result);
     })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', authVerification, (req, res) => {
     let body = req.body;
     let id = parseInt(req.params.id);
     productos.updateObject(id, body).then(result => {
