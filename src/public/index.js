@@ -42,6 +42,7 @@ document.addEventListener('submit', event => {
     let form = document.querySelector('#productForm');
     let data = {
         "title": document.getElementById("title").value,
+        "code": document.getElementById("code").value,
         "price": document.getElementById("price").value,
         "thumbnail": document.getElementById("thumbnail").value
     };

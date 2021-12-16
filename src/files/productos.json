@@ -1,60 +1,70 @@
 [
     {
         "title": "Producto de prueba",
+        "code": "0001",
         "price": 60.25,
         "thumbnail": "urlImgProduct",
         "id": 2
     },
     {
         "title": "Probando",
+        "code": "0002",
         "price": "12",
         "thumbnail": "imagen.png",
         "id": 3
     },
     {
         "title": "Prueba 4",
+        "code": "0003",
         "price": "900",
         "thumbnail": "img",
         "id": 6
     },
     {
         "title": "prueba",
+        "code": "0004",
         "price": "23",
         "thumbnail": "img",
         "id": 7
     },
     {
         "title": "prueba9",
+        "code": "0005",
         "price": "299",
         "thumbnail": "img",
         "id": 8
     },
     {
         "title": "productos3",
+        "code": "0006",
         "price": "90",
         "thumbnail": "D",
         "id": 9
     },
     {
         "title": "Prueba",
+        "code": "0007",
         "price": "900",
         "thumbnail": "imag",
         "id": 10
     },
     {
         "title": "Prueba ",
+        "code": "0008",
         "price": "900",
         "thumbnail": "233ogf",
         "id": 11
     },
     {
         "title": "Producto",
+        "code": "0009",
         "price": "900",
         "thumbnail": "img",
         "id": 13
     },
     {
         "title": "Producto de prueba alterado",
+        "code": "0001",
         "price": 60.25,
         "thumbnail": "urlImgProduct",
         "id": 1

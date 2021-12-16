@@ -6,10 +6,16 @@ export default class Contenedor {
         this.file = fileName;
     }
     
-    async save(obj) {
+    async save(obj, validateData = false) {
+        let existingFile = await this.getFile();
+        if (validateData) {
+            let isNewObject = await this.validateExistingObject(validateData, JSON.parse(existingFile));
+            if (isNewObject.error) {
+                return isNewObject;
+            }
+        }
         let newObjId  = await this.getNewId();
         Object.assign(obj, {id: newObjId});
-        let existingFile = await this.getFile();
         let newOjb = !existingFile ? [obj] : [... JSON.parse(existingFile), obj];
         try {
             await fs.promises.writeFile(`${__direname}/files/${this.file}.json`, JSON.stringify(newOjb));
@@ -171,5 +177,11 @@ export default class Contenedor {
             console.log('er:', error)
 		    throw new Error(`Error en lectura: ${error.message}`);
         }
+    }
+
+    async validateExistingObject(data, collection = []) {
+        let dataKey = Object.keys(data)[0];
+        let findDataInCollection = collection.find(item => item[dataKey] == Object.values(data)[0]);
+        return findDataInCollection ? {error: 'Ya existe ese registro'} : false;
     }
 }

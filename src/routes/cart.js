@@ -7,6 +7,7 @@ const productos = new Contenedor('productos');
 
 router.post('/', (req, res) => {
     let newCart = req.body;
+    newCart.productos = [];
     carritos.save(newCart).then(result => {
         res.send(result);
     }).catch(e => console.log(e))
@@ -33,9 +34,12 @@ router.post('/:id/productos/:id_prod', (req, res) => {
         let updatedCart = result;
         productos.getById(id_prod).then( prod => {
             if (prod.error) return res.send(prod.error)
-            updatedCart['productos'].push(prod);
-            carritos.updateObject(id, updatedCart).then(newResult => {
-                res.send(newResult);
+            productos.validateExistingObject({"code":prod.code}, JSON.parse(result.productos)).then( validateRes => {
+                if (validateRes.error) return validateRes.error;
+                updatedCart['productos'].push(prod);
+                carritos.updateObject(id, updatedCart).then(newResult => {
+                    res.send(newResult);
+                })
             })
         })
     }).catch(e => console.log(e))

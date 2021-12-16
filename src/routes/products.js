@@ -22,7 +22,8 @@ router.get('/:id', (req, res) => {
 
 router.post('/', authVerification, (req, res) => {
     let newProduct = req.body;
-    productos.save(newProduct).then(result => {
+    let validate = {"code":newProduct.code};
+    productos.save(newProduct, validate).then(result => {
         res.send(result);
         if (result.status == 'sucess') {
             productos.getAll().then(result => {
