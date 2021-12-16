@@ -33,9 +33,9 @@ router.post('/:id/productos/:id_prod', (req, res) => {
     carritos.getById(id).then(result => {
         let updatedCart = result;
         productos.getById(id_prod).then( prod => {
-            if (prod.error) return res.send(prod.error)
-            productos.validateExistingObject({"code":prod.code}, JSON.parse(result.productos)).then( validateRes => {
-                if (validateRes.error) return validateRes.error;
+            if (prod.error) res.send(prod.error);
+            productos.validateExistingObject({code:prod.code}, result.productos).then(validateRes => {
+                if (validateRes.error) res.send(validateRes.error);
                 updatedCart['productos'].push(prod);
                 carritos.updateObject(id, updatedCart).then(newResult => {
                     res.send(newResult);

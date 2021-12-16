@@ -22,7 +22,7 @@ router.get('/:id', (req, res) => {
 
 router.post('/', authVerification, (req, res) => {
     let newProduct = req.body;
-    let validate = {"code":newProduct.code};
+    let validate = {code:newProduct.code};
     productos.save(newProduct, validate).then(result => {
         res.send(result);
         if (result.status == 'sucess') {
