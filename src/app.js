@@ -3,14 +3,14 @@ import productRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
 import cors from 'cors';
 import {engine} from 'express-handlebars';
-import Contenedor from './classes/Contenedor.js';
+import Products from './services/Products.js';
 import __direname from './utils.js';
 import {Server} from 'socket.io';
-import Messages from './services/messages.js';
+import Messages from './services/Messages.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const productos = new Contenedor('productos');
+const productos = new Products();
 const admin = true;
 
 const server = app.listen(PORT, () => {
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 app.get('/views/productos', (req, res) => {
     productos.getAll().then((data) => {
         let productData = {
-            products : data
+            products : data.payload
         }
         res.render("productos", productData);
     });
@@ -51,7 +51,7 @@ app.get('/views/productos', (req, res) => {
 
 io.on('connection', async socket=>{
     let products = await productos.getAll();
-    socket.emit('updateProducts', products);
+    socket.emit('updateProducts', products.payload);
 
     let messageService = new Messages();
     socket.on('message', async data => {

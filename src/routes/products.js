@@ -1,10 +1,10 @@
 import express from 'express';
-import Contenedor from '../classes/Contenedor.js';
+import Products from '../services/Products.js';
 import { authVerification } from '../utils.js';
 import {io} from '../app.js';
 
 const router = express.Router();
-const productos = new Contenedor('productos');
+const productos = new Products();
 
 router.get('/', (req, res) => {
     productos.getAll().then(result => {
@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
 router.post('/', authVerification, (req, res) => {
     let newProduct = req.body;
     let validate = {code:newProduct.code};
-    productos.save(newProduct, validate).then(result => {
+    productos.registerProduct(newProduct, validate).then(result => {
         res.send(result);
         if (result.status == 'sucess') {
             productos.getAll().then(result => {
@@ -35,7 +35,7 @@ router.post('/', authVerification, (req, res) => {
 
 router.delete('/:id', authVerification, (req, res) => {
     let idProduct = parseInt(req.params.id)
-    productos.deteleById(idProduct).then(result => {
+    productos.deleteById(idProduct).then(result => {
         res.send(result);
     })
 })
@@ -43,7 +43,7 @@ router.delete('/:id', authVerification, (req, res) => {
 router.put('/:id', authVerification, (req, res) => {
     let body = req.body;
     let id = parseInt(req.params.id);
-    productos.updateObject(id, body).then(result => {
+    productos.updateById(id, body).then(result => {
         res.send(result);
     })
 })
