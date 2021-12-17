@@ -6,6 +6,7 @@ import {engine} from 'express-handlebars';
 import Contenedor from './classes/Contenedor.js';
 import __direname from './utils.js';
 import {Server} from 'socket.io';
+import Messages from './services/messages.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -49,15 +50,16 @@ app.get('/views/productos', (req, res) => {
 })
 
 io.on('connection', async socket=>{
-    let messagesLog = new Contenedor('messages');
     let products = await productos.getAll();
     socket.emit('updateProducts', products);
 
+    let messageService = new Messages();
     socket.on('message', async data => {
-        let log = await messagesLog.save(data);
-        let loadMessages = await messagesLog.getAll();
+        messageService.saveMessage(data);
+        let loadMessages = await messageService.getAll();
+        console.log('çargando mensajes', loadMessages)
         io.emit('messageLog', loadMessages);
     });
 
-    socket.emit('messageLog', await messagesLog.getAll());
+    socket.emit('messageLog', await messageService.getAll());
 })

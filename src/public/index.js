@@ -21,9 +21,7 @@ input.addEventListener('keyup', (e) => {
         if (email.value == '' | input.value == '') {
             alert('Debe ingresar el mail y el mensaje que desea enviar');
         } else {
-            let newDate = new Date();
-            date = `${newDate.getDate()}/${newDate.getMonth()}/${newDate.getFullYear()} ${newDate.getHours()}:${newDate.getMinutes()}:${newDate.getSeconds()}`;
-            socket.emit('message', {user: user.value, emai: email.value, message: e.target.value, date});
+            socket.emit('message', {user: user.value, email: email.value, message: e.target.value});
             input.value = '';
         }
     }
@@ -31,8 +29,8 @@ input.addEventListener('keyup', (e) => {
 
 socket.on('messageLog', data => {
     let msg = document.getElementById('messagesTable');
-    let dataLog = data.map(message => {
-        return `<span style="display:flex"><p style="color:blue">${message.emai}</p><p style="color:brown">[${message.date}] :</p><p style="color:green"> ${message.message}</p></span>`;
+    let dataLog = data.payload.map(message => {
+        return `<span style="display:flex"><p style="color:blue">${message.email}</p><p style="color:brown">[${message.created_at}] :</p><p style="color:green"> ${message.message}</p></span>`;
     }).join(' ');
     msg.innerHTML = dataLog;
 })
