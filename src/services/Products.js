@@ -45,7 +45,7 @@ export default class Products{
             return {status: "error", message: error}
         }
     }
-    registerProduct = async (product) =>{
+    save = async (product) =>{
         try{
             let exists = await database.table('products').select().where('code', product.code).first();
             if (exists) return {status: "error", message: "Code already exists"}

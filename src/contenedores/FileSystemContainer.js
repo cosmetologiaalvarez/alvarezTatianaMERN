@@ -1,9 +1,10 @@
 import fs from 'fs';
 import __direname from '../utils.js';
+import config from '../fileConfig.js';
 
-export default class Contenedor {
+export default class FileSystemContainer {
     constructor (fileName) {
-        this.file = fileName;
+        this.file = `${config.fileSystem.baseUrl}${fileName}`;
     }
     
     async save(obj, validateData = false) {
@@ -18,7 +19,7 @@ export default class Contenedor {
         Object.assign(obj, {id: newObjId});
         let newOjb = !existingFile ? [obj] : [... JSON.parse(existingFile), obj];
         try {
-            await fs.promises.writeFile(`${__direname}/files/${this.file}.json`, JSON.stringify(newOjb));
+            await fs.promises.writeFile(`${this.file}`, JSON.stringify(newOjb));
             return newOjb;
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
@@ -27,7 +28,7 @@ export default class Contenedor {
 
     async getFile() {
         try {
-            let file = await fs.promises.readFile(`${__direname}/files/${this.file}.json`, 'utf-8');
+            let file = await fs.promises.readFile(`${this.file}`, 'utf-8');
             return file
         } catch(error) {
             return false;
@@ -78,7 +79,7 @@ export default class Contenedor {
         }
     }
 
-    async deteleById(id) {
+    async deleteById(id) {
         try {
             const readObjs =  await this.getFile();
             const savedObjs = readObjs == false ? false : JSON.parse(readObjs);
@@ -107,8 +108,8 @@ export default class Contenedor {
 
     async deteleAll() {
         try {
-            fs.promises.writeFile(`${__direname}/files/${this.file}.json`, '');
-            console.log(`Se ha eliminado los objetos del archivo ${this.file}.json`);
+            fs.promises.writeFile(`${this.file}`, '');
+            console.log(`Se ha eliminado los objetos del archivo ${this.file}`);
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
         }
@@ -116,14 +117,14 @@ export default class Contenedor {
 
     async reMakeObj(obj) {
         try {
-            await fs.promises.writeFile(`${__direname}/files/${this.file}.json`, JSON.stringify(obj));
+            await fs.promises.writeFile(`${this.file}`, JSON.stringify(obj));
             return 'Coleccion modificada';
         } catch(err) {
             throw new Error(`Error de escritura: ${err}`);
         }
     }
 
-    async updateObject(id, body) {
+    async updateById(id, body) {
         try {
             let findObject = await this.getById(id);
             if (findObject.error) return findObject.error;
@@ -167,7 +168,7 @@ export default class Contenedor {
                 }
                 idFromCollection['productos'] = updateFile;
                 let res = idFromCollection && deleteObj
-                    ?  await this.updateObject(idCollection, idFromCollection)
+                    ?  await this.updateById(idCollection, idFromCollection)
                     : 'No se encontro registro para los datos ingresados';
                 return res;
             } else {
