@@ -1,7 +1,7 @@
 let cart;
 let products;
 let messages;
-let persistence = 'mongo';
+let persistence = 'firebase';
 
 const {default:MessagesFileSystem} = await import('./messages/messagesFyleSystem.js');
 messages = new MessagesFileSystem();
@@ -17,8 +17,13 @@ switch (persistence) {
         const {default:CartsMongo} = await import('./cart/cartMongo.js');
         const {default:ProductsMongo} = await import('./products/productsMongo.js');
         cart = new CartsMongo();
-        products = new  ProductsMongo();
+        products = new ProductsMongo();
         break;
+    case 'firebase':
+        const {default:CartsFireBase} = await import('./cart/cartFireBase.js');
+        const {default:ProductsFireBase} = await import('./products/productsFireBase.js');
+        cart = new CartsFireBase();
+        products = new ProductsFireBase();
     default:
         break;
 }

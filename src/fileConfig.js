@@ -7,5 +7,7 @@ export default{
     mongo: {
         baseUrl: 'mongodb+srv://tati:tatiadmin@ecommerce.qgkhm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
     },
-
+    fireBase: {
+        baseUrl: 'https://coderhouse-mern-ecommerce.firebaseio.com'
+    }
 }

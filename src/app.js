@@ -3,9 +3,9 @@ import productRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
 import cors from 'cors';
 import {engine} from 'express-handlebars';
-import Products from './services/Products.js';
 import __direname from './utils.js';
 import {Server} from 'socket.io';
+import Products from './services/Products.js';
 import Messages from './services/Messages.js';
 
 const app = express();
