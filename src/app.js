@@ -7,7 +7,7 @@ import Contenedor from './classes/Contenedor.js';
 import __direname from './utils.js';
 import {Server} from 'socket.io';
 import Messages from './services/messages.js';
-import randomProduct from './mocks/productos.js'
+import generateProducts from './mocks/productos.js'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -51,13 +51,10 @@ app.get('/views/productos', (req, res) => {
 })
 
 app.get('/api/productos-test', (req, res) => {
-    let productosRandom = new randomProduct();
-    productosRandom.then((data) => {
-        let productData = {
-            products : data
-        }
-        res.render("productosRandom", productData);
-    });
+    let productData = {
+        products :  generateProducts()
+    }
+    res.render("productosRandom", productData);
 })
 
 io.on('connection', async socket=>{
