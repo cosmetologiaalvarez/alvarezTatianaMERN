@@ -29,8 +29,10 @@ input.addEventListener('keyup', (e) => {
 
 socket.on('messageLog', data => {
     let msg = document.getElementById('messagesTable');
-    let dataLog = data.payload.map(message => {
-        return `<span style="display:flex"><p style="color:blue">${message.email}</p><p style="color:brown">[${message.created_at}] :</p><p style="color:green"> ${message.message}</p></span>`;
+    console.log(data, 'TATI')
+    let messageArray = data.payload ?? data;
+    let dataLog = messageArray.map(message => {
+        return `<span style="display:flex"><p style="color:blue">${message.email}</p><p style="color:brown">[${message.timestamps}] :</p><p style="color:green"> ${message.message}</p></span>`;
     }).join(' ');
     msg.innerHTML = dataLog;
 })

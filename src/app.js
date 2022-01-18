@@ -1,17 +1,15 @@
 import express from 'express';
-import productRouter from './routes/products.js';
-import cartRouter from './routes/cart.js';
 import cors from 'cors';
 import {engine} from 'express-handlebars';
-import Contenedor from './classes/Contenedor.js';
-import __direname from './utils.js';
 import {Server} from 'socket.io';
-import Messages from './services/messages.js';
-import generateProducts from './mocks/productos.js'
+import __direname from './utils.js';
+import cartRouter from './routes/cart.js';
+import productRouter from './routes/products.js';
+import generateProducts from './mocks/productos.js';
+import {messages, products} from './daos/index.js'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const productos = new Contenedor('productos');
 const admin = true;
 
 const server = app.listen(PORT, () => {
@@ -42,7 +40,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/views/productos', (req, res) => {
-    productos.getAll().then((data) => {
+    products.getAll().then((data) => {
         let productData = {
             products : data
         }
@@ -58,16 +56,16 @@ app.get('/api/productos-test', (req, res) => {
 })
 
 io.on('connection', async socket=>{
-    let products = await productos.getAll();
-    socket.emit('updateProducts', products);
+    let productsCollection = await products.getAll();
+    socket.emit('updateProducts', productsCollection);
 
-    let messageService = new Messages();
     socket.on('message', async data => {
-        messageService.saveMessage(data);
-        let loadMessages = await messageService.getAll();
+        data['timestamps'] = new Date();
+        await messages.save(data);
+        let loadMessages = await messages.getAll();
         console.log('çargando mensajes', loadMessages)
         io.emit('messageLog', loadMessages);
     });
 
-    socket.emit('messageLog', await messageService.getAll());
+    socket.emit('messageLog', await messages.getAll());
 })

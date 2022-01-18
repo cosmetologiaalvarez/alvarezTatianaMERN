@@ -17,6 +17,8 @@
     "express-handlebars": "^6.0.2",
     "faker": "^5.5",
     "knex": "^0.95.15",
+    "mongoose": "^6.1.7",
+    "normalizr": "^3.6.1",
     "socket.io": "^4.4.1",
     "sqlite3": "^5.0.2",
     "ts-loader": "^9.2.6",
