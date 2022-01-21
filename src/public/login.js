@@ -13,6 +13,10 @@ function initLogIn() {debugger;
             'Content-Type':'application/json'
         }
     }).then(result => result.json()).then(json => {
-        location.replace('./index.html')
+        if (json.status == 200) {
+            location.replace('./index.html')
+        } else {
+            alert("No hay un usuario registrado con los datos ingresados")
+        }
     })
 }

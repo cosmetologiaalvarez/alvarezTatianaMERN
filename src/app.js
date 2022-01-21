@@ -60,16 +60,18 @@ app.get('/views/productos', (req, res) => {
 
 app.post('/login', async(req, res)=>{
     let {email, password} = req.body;debugger;
-    if (!email || !password) return res.status(400).send({error: "Complete los datos obligatorios"})
-    const user = await users.getByEmail(email);
-   console.log(user, ' tati')
-    if (!user) return res.status(404).send({error: "No se encontro un usuario con los datos ingresados"});
-    if (user.password !== password) return res.status(400).send({error: "Contraseña ingresada incorrecta"});
-    req.session.user = {
-        username: user.username,
-        email: user.email
+    if (!email || !password) return res.send({status:400, msg: "Complete los datos obligatorios"})
+    const db = await users.getConnection();
+    const user = await db.find({email:email})
+    if (!user) return res.send({status:400, msg: "No se encontro un usuario con los datos ingresados"});
+    if (user[0] && user[0].password !== password) return res.send({status:400, error: "Contraseña ingresada incorrecta"});
+    if (user[0]) {
+        req.session.user = {
+            username: user[0].username,
+            email: user[0].email
+        }
+        res.send({status:200, msg: "Ha ingresado correctamente"})
     }
-    res.send({status: "Ha ingresado correctamente"})
 })
 
 io.on('connection', async socket=>{
