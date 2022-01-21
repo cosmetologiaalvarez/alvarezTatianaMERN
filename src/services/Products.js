@@ -1,4 +1,4 @@
-import database from "../config.js";
+import database from "../sqlconfig.js";
 
 export default class Products{
     constructor() {

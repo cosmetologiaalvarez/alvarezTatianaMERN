@@ -1,21 +1,29 @@
 import express from 'express';
-import productRouter from './routes/products.js';
-import cartRouter from './routes/cart.js';
 import cors from 'cors';
 import {engine} from 'express-handlebars';
-import __direname from './utils.js';
 import {Server} from 'socket.io';
-import Products from './services/Products.js';
-import Messages from './services/Messages.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import __direname from './utils.js';
+import productRouter from './routes/products.js';
+import cartRouter from './routes/cart.js';
+import baseUrl from './fileConfig.js'
+import {users, messages, products} from './daos/index.js'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
-const productos = new Products();
 const admin = true;
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
 })
+
+const initSession = (session({
+    store:MongoStore.create({mongoUrl:baseUrl.mongo.baseUrl}),
+    resave: false,
+    saveUninitialized: false,
+    secret: "secretString"
+}))
 
 export const io = new Server(server);
 
@@ -27,6 +35,7 @@ app.use(express.static(__direname+'/public'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
+app.use(initSession);
 app.use('/api/productos', productRouter);
 app.use('/api/carrito', cartRouter);
 
@@ -41,7 +50,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/views/productos', (req, res) => {
-    productos.getAll().then((data) => {
+    products.getAll().then((data) => {
         let productData = {
             products : data.payload
         }
@@ -49,17 +58,30 @@ app.get('/views/productos', (req, res) => {
     });
 })
 
-io.on('connection', async socket=>{
-    let products = await productos.getAll();
-    socket.emit('updateProducts', products.payload);
+app.post('/login', async(req, res)=>{
+    let {email, password} = req.body;debugger;
+    if (!email || !password) return res.status(400).send({error: "Complete los datos obligatorios"})
+    const user = await users.getByEmail(email);
+   console.log(user, ' tati')
+    if (!user) return res.status(404).send({error: "No se encontro un usuario con los datos ingresados"});
+    if (user.password !== password) return res.status(400).send({error: "Contraseña ingresada incorrecta"});
+    req.session.user = {
+        username: user.username,
+        email: user.email
+    }
+    res.send({status: "Ha ingresado correctamente"})
+})
 
-    let messageService = new Messages();
+io.on('connection', async socket=>{
+    let productos = await products.getAll();
+    socket.emit('updateProducts', productos.payload);
+
     socket.on('message', async data => {
-        messageService.saveMessage(data);
-        let loadMessages = await messageService.getAll();
+        messages.saveMessage(data);
+        let loadMessages = await messages.getAll();
         console.log('çargando mensajes', loadMessages)
         io.emit('messageLog', loadMessages);
     });
 
-    socket.emit('messageLog', await messageService.getAll());
+    socket.emit('messageLog', await messages.getAll());
 })

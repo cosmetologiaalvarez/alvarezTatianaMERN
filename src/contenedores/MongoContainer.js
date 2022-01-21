@@ -51,4 +51,14 @@ export default class MongoContainer {
             return {status: "error", error: error}
         }
     }
+
+    getByEmail = async (value) => {
+        try {
+            let item = this.collection.find({ 'email' : `${value}` })
+            console.log(item)
+            return {status: "success", payload: item}
+        } catch (error) {
+            return {status: "error", error: error}
+        }
+    }
 }
