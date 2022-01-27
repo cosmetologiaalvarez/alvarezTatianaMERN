@@ -9,7 +9,7 @@ export default class MongoContainer {
     }
     
     getAll = async () => {
-        try { console.log('tati')
+        try {
             let collectionItems = await this.collection.find();
             return {status: "success", payload: collectionItems}
         } catch (error) {
