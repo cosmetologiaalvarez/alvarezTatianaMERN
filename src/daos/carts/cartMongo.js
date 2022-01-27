@@ -6,8 +6,8 @@ export default class CartMongo extends MongoContainer {
         super(
             'carts',
             {
-                usuario: {type: String, require: true},
-                fecha: {type: String, require: true},
+                usuario: {type: String, required: true},
+                fecha: {type: String, required: true},
                 products: {
                     type: [{
                         type: Schema.Types.ObjectId,

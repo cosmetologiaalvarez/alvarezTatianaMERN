@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
-import fileConfig from '../fileConfig.js'
+import fileConfig from '../fileConfig.js';
+import {ObjectId} from 'mongodb';
 
 mongoose.connect(fileConfig.mongo.baseUrl);
 
@@ -18,7 +19,7 @@ export default class MongoContainer {
     }
     save = async (object) => {
         try {
-            let newItem = this.collection.create(object);
+            let newItem = await this.collection.create(object);
             return {status: "success", payload: newItem}
         } catch (error) {
             return {status: "error", error: error}
@@ -27,7 +28,8 @@ export default class MongoContainer {
     
     getById = async (id) => {
         try {
-            let item = this.collection.find({"_id": id});
+            console.log('el ides',id)
+            let item = await this.collection.findOne({_id: new ObjectId(id)});
             return {status: "success", payload: item}
         } catch (error) {
             return {status: "error", error: error}
@@ -36,7 +38,7 @@ export default class MongoContainer {
 
     deleteById = async (id) => {
         try {
-            this.collection.deleteOne({"_id": id});
+            await this.collection.deleteOne({"_id": id});
             return {status: "success", payload: 'Coleccion modificada'}
         } catch (error) {
             return {status: "error", error: error}
@@ -45,14 +47,14 @@ export default class MongoContainer {
 
     updateById = async (id, body) => {
         try {
-            this.collection.update({"_id": id}, {body});
+            await this.collection.update({"_id": id}, {body});
             return {status: "success", payload: 'Coleccion modificada'}
         } catch (error) {
             return {status: "error", error: error}
         }
     }
 
-    getConnection = async (value) => {
+    getConnection = async () => {
         try {
             return this.collection
         } catch (error) {

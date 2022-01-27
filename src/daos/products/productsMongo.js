@@ -5,10 +5,10 @@ export default class ProductMongo extends MongoContainer {
         super(
             'products',
             {
-                title: {type: String, require: true},
-                code: {type: String, require: true},
-                price: {type: Number, require: true},
-                thumbnail: {type: String, require: true},
+                title: {type: String, required: true},
+                code: {type: String, required: true},
+                price: {type: Number, required: true},
+                thumbnail: {type: String, required: true}
             }
         )
     }

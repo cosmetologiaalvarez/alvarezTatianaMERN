@@ -6,7 +6,7 @@ export default class MessageMongo extends MongoContainer {
         super(
             'messages',
             {
-                text: {type: String, require: true},
+                text: {type: String, required: true},
                 user: {
                     type: [{
                         type: Schema.Types.ObjectId,

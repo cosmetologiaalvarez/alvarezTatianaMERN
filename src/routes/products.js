@@ -12,10 +12,9 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-    let idProduct = parseInt(req.params.id)
+    let idProduct = req.params.id
     products.getById(idProduct).then(result => {
         res.send(result);
-
     })
 })
 
@@ -33,7 +32,7 @@ router.post('/', authVerification, (req, res) => {
 })
 
 router.delete('/:id', authVerification, (req, res) => {
-    let idProduct = parseInt(req.params.id)
+    let idProduct = req.params.id
     products.deleteById(idProduct).then(result => {
         res.send(result);
     })
@@ -41,7 +40,7 @@ router.delete('/:id', authVerification, (req, res) => {
 
 router.put('/:id', authVerification, (req, res) => {
     let body = req.body;
-    let id = parseInt(req.params.id);
+    let id = req.params.id;
     products.updateById(id, body).then(result => {
         res.send(result);
     })

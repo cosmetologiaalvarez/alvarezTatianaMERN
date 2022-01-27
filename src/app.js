@@ -52,20 +52,26 @@ app.get('/', (req, res) => {
 app.get('/views/productos', (req, res) => {
     products.getAll().then((data) => {
         let productData = {
-            products : data.payload
+            products : data.payload.map((currentItem) => {
+                return {
+                    title: currentItem.title,
+                    price: currentItem.price,
+                    thumbnail: currentItem.thumbnail 
+                }
+            })
         }
         res.render("productos", productData);
     });
 })
 
 app.post('/login', async(req, res)=>{
-    let {email, password} = req.body;debugger;
+    let {email, password} = req.body
     if (!email || !password) return res.send({status:400, msg: "Complete los datos obligatorios"})
-    const db = await users.getConnection();
-    const user = await db.findOne({email:email}) 
-    console.log('devuelto por db:', user)
-    if (!user) return res.send({status:400, msg: "No se encontro un usuario con los datos ingresados"});
-    if (user && user.password !== password) return res.send({status:400, error: "Contraseña ingresada incorrecta"});
+    const db = await users.getConnection()
+    const user = await db.findOne({email:email})
+    console.log(user)
+    if (!user) return res.send({status:400, msg: "No se encontro un usuario con los datos ingresados"})
+    if (user && user.password !== password) return res.send({status:400, error: "Contraseña ingresada incorrecta"})
     if (user) {
         req.session.user = {
             username: user.username,
