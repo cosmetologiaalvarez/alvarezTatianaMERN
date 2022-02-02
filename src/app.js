@@ -87,15 +87,15 @@ app.post('/login', async(req, res)=>{
     }
 })
 
-app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}), (req, res) => {
-
-})
+app.get('/auth/facebook', passport.authenticate('facebook', {scope: ['email']}), (req, res) => {})
 
 app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    failureRedirect: 'https://www.facebook.com/'
+    failureRedirect: 'http://localhost:8080/pages/login.html',
+    successRedirect: 'http://localhost:8080/'
 }), (req, res) => {
     res.send({message: 'Se ha logueado'})
 })
+
 
 io.on('connection', async socket=>{
     let productos = await products.getAll();
@@ -104,7 +104,6 @@ io.on('connection', async socket=>{
     socket.on('message', async data => {
         messages.saveMessage(data);
         let loadMessages = await messages.getAll();
-        console.log('çargando mensajes', loadMessages)
         io.emit('messageLog', loadMessages);
     });
 

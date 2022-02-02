@@ -23,5 +23,4 @@ function initLogIn() {
 
 function  initLogInFacebook() {
     location = 'http://localhost:8080/auth/facebook';
-    console.log('hola')
 }
