@@ -1,5 +1,5 @@
 import fs from 'fs';
-import __direname from '../utils.js';
+import __dirname from '../utils.js';
 import config from '../fileConfig.js';
 
 export default class FileSystemContainer {

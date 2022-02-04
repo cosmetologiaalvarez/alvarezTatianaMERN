@@ -6,13 +6,15 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import FacebookStrategy from 'passport-facebook';
-import __direname from './utils.js';
+import dotenv from 'dotenv';
+import __dirname from './utils.js';
 import productRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
 import baseUrl from './fileConfig.js';
 import {users, messages, products} from './daos/index.js';
 import initializePassportConfig from './logIn-config.js';
 
+dotenv.config({ path: __dirname+'\\.env'});
 const app = express();
 const PORT = process.env.PORT || 8080;
 const admin = true;
@@ -34,7 +36,7 @@ app.use((req, res, next) => {
     req.auth = admin;
     next();
 });
-app.use(express.static(__direname+'/public'));
+app.use(express.static(__dirname+'/public'));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -46,7 +48,7 @@ app.use('/api/carrito', cartRouter);
 
 app.engine('handlebars', engine());
 app.set("view engine", "handlebars");
-app.set("views", __direname+"/views");
+app.set("views", __dirname+"/views");
 
 server.on('error', (error) => console.log('Error en el servidor'));
 
@@ -69,6 +71,19 @@ app.get('/views/productos', (req, res) => {
         }
         res.render("productos", productData);
     });
+})
+
+app.get('/info', (req, res) => {
+        let infoList = [
+            {desc : 'Argumentos entrada', det: 'node minimist -p PUERTO'},
+            {desc : 'Nombre plataforma', det : process.platform},
+            {desc : 'Version Node', det : process.version},
+            {desc : 'Memoria total reservada', det : process.memoryUsage().rss},
+            {desc : 'Path ejecucion', det : process.cwd()},
+            {desc : 'Process Id', det : process.pid},
+            {desc : 'Carpeta del proyecto', det: __dirname},
+        ]
+        res.render("info", {infoList});
 })
 
 app.post('/login', async(req, res)=>{

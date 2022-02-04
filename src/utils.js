@@ -2,7 +2,7 @@ import {fileURLToPath} from 'url';
 import {dirname} from 'path';
 
 const filename = fileURLToPath(import.meta.url);
-const __direname = dirname(filename);
+const __dirname = dirname(filename);
 
 export const authVerification = (req, res, next) => {
     if (!req.auth) {
@@ -11,4 +11,4 @@ export const authVerification = (req, res, next) => {
         next();
     }
 }
-export default __direname;
+export default __dirname;

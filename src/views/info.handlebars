@@ -1,0 +1,9 @@
+<input type="button" onclick="location.href='/'" value="Ir al inicio">
+
+<div> {{@infoList}}
+    {{#each infoList}}
+        <div>
+            <p>{{this.desc}} : {{this.det}}</p>
+        </div>
+    {{/each}}
+</div>

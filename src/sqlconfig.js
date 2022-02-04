@@ -1,9 +1,9 @@
 import knex from "knex";
-import __direname from "./utils.js";
+import __dirname from "./utils.js";
 
 const database = knex({
     client:'sqlite3',
-    connection:{filename:__direname+'/db/ecommerce.sqlite'},
+    connection:{filename:__dirname+'/db/ecommerce.sqlite'},
     useNullAsDefault: false
 });
 

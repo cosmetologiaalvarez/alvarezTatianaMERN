@@ -1,13 +1,15 @@
-import __direname from "./utils.js";
+import __dirname from "./utils.js";
+import dotenv from 'dotenv';
+dotenv.config({ path: __dirname+'\\.env'});
 
 export default{
     fileSystem: {
-        baseUrl: __direname + '\\' + 'files\\'
+        baseUrl: __dirname + '\\' + 'files\\'
     },
     mongo: {
-        baseUrl: 'mongodb+srv://tati:tatiadmin@ecommerce.qgkhm.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+        baseUrl: process.env.DB_MONGO
     },
     fireBase: {
-        baseUrl: 'https://coderhouse-mern-ecommerce.firebaseio.com'
+        baseUrl: process.env.DB_FIREBASE
     }
 }
