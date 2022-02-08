@@ -7,6 +7,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import FacebookStrategy from 'passport-facebook';
 import dotenv from 'dotenv';
+import { fork } from 'child_process';
 import __dirname from './utils.js';
 import productRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
@@ -111,6 +112,18 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
     res.send({message: 'Se ha logueado'})
 })
 
+app.get('/api/randoms', async(req, res) => {
+    let num = req.query.cant ?? 100000000
+    const forked = fork('src/randomNumChild')
+
+    forked.on('message', response => {
+        console.log('Mensaje del child process:', response)
+        res.send(response)
+    })
+    setTimeout(() => {
+        forked.send({numero: num})
+    }, 1000)
+})
 
 io.on('connection', async socket=>{
     let productos = await products.getAll();
