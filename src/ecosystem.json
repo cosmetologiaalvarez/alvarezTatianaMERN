@@ -1,0 +1,10 @@
+{
+    "app": [
+        {
+            "name": "Proceso 1",
+            "script": "app.js",
+            "watch": "true",
+            "args": "8081"
+        }
+    ]
+}

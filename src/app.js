@@ -8,17 +8,20 @@ import passport from 'passport';
 import FacebookStrategy from 'passport-facebook';
 import dotenv from 'dotenv';
 import { fork } from 'child_process';
+import compression from 'compression';
 import __dirname from './utils.js';
 import productRouter from './routes/products.js';
 import cartRouter from './routes/cart.js';
 import baseUrl from './fileConfig.js';
 import {users, messages, products} from './daos/index.js';
 import initializePassportConfig from './logIn-config.js';
+import log from './log4js.js'
 
 dotenv.config({ path: __dirname+'\\.env'});
 const app = express();
 const PORT = process.env.PORT || 8080;
 const admin = true;
+const logger = log.getLogger();
 
 const server = app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
@@ -46,6 +49,12 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use('/api/productos', productRouter);
 app.use('/api/carrito', cartRouter);
+app.use(compression());
+
+app.use((req, res, next) => {
+    logger.log('info',  `${req.method} at ${req.path}`)
+    next()
+})
 
 app.engine('handlebars', engine());
 app.set("view engine", "handlebars");
